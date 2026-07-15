@@ -1,5 +1,10 @@
 # 更新日志 📔
 
+## 5.0.1 (2026-7-15)
+
+- 移除打包后的 "package.json" 文件的 "type" 属性的，该属性添加影响 cjs 的引用方式
+- 移除多余的 "module" 属性
+
 ## 5.0.0 (2026-6-28)
 
 - `runOtherCode` 移除对单只 `waiting` 的支持（该参数在不注意下可能会影响 [command](https://www.npmjs.com/@vvi/command) 的输入或选择模式的正确使用）。原于 4.2.13 版本添加该属性为了优化性能，但由于当时欠考虑，忽略了 `waiting` 对 `process.stdin` 的劫持。该劫持会导致在 [command](https://www.npmjs.com/package/@vvi/command) 使用问讯或选择交互时持续等待上一个劫持完成。当然，在适当的位置使用 `waiting.destroyed()` 可结束劫持，但这并不是最佳的解决方案。但移除并不意味着移除 `waiting` 参数属性，而是禁止了使用 `WaitingTipsResult` 作为参数，该值可能会持续劫持 `process.stdin` （如上所述）直到 `waiting.destroyed()` 显示释放
