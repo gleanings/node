@@ -60,12 +60,14 @@ type npmRegistry = '官方' | '淘宝' | '腾讯' | '中科大' | 'yarn';
 
 ## path 模块
 
-- `pathJoin` 文件地址拼接
-- `pathBasename` 给出文件路径获取文件名，不带文件类型后缀
-- `initializeFile` 初始化路径 `__filename` 和 `__dirname` ，因为这两个仅能在 `cjs` 文件下使用，使用这里做了初始化，兼容
-- `getCallerFilename` 获取调用函数的文件路径
-- `isWindows` 当前是否为 windows 环境，用于在使用 `path` 时分隔符不同产生的差异
-- `getDirectoryBy` 根据目标的文件或文件名来找到存在该目标的父级目录
+- `pathJoin` - 文件地址拼接
+- `pathBasename` - 给出文件路径获取文件名，不带文件类型后缀
+- `initializeFile` - 初始化路径 `__filename` 和 `__dirname` ，因为这两个仅能在 `cjs` 文件下使用，使用这里做了初始化，兼容
+- `getCallerFilename` - 获取调用函数的文件路径
+- `isWindows` - 当前是否为 windows 环境，用于在使用 `path` 时分隔符不同产生的差异
+- `getDirectoryBy` - 根据目标的文件或文件名来找到存在该目标的父级目录
+- `fileUrlToPath` - 文件 URL 转化为系统文件路径
+- `pathToFileUrl` - 系统文件路径转化为文件 URL
 
 ### cursor 部分
 
@@ -152,7 +154,7 @@ _p('hello', false); // hello （打印完不换行，光标依旧在 o 后面）
 
 ```ts
 import { colorLine } from '@vvi/node';
-// 在 vs code extension 开发过程中发现未能正常打印，不知原因 
+// 在 vs code extension 开发过程中发现未能正常打印，不知原因
 
 colorLine(); // 打印一个彩色分割线
 colorLine('就是玩'); // 打印一个彩色分割线，中间是文本： “就是玩”

@@ -1,9 +1,10 @@
 import { autoEscapedRegExp } from '@vvi/utils';
 import { isWindows } from './isWindows';
+import { pathToFileUrl } from './pathToFileURL';
 
 /**
  * # 获取调用文件信息，此方法存在一些限制，请谨慎使用
- *
+ * *会自动转化路径为统一文件地址*
  * @param fileName 通过调用文件信息，返回调用者的文件路径
  * @returns 调用文件的信息
  *     - name 文件名
@@ -18,7 +19,7 @@ export function getCallerFileInfo(fileName: string): {
   originArr: string[];
 } {
   /** 结果行 */
-  const regexp = autoEscapedRegExp(fileName);
+  const regexp = autoEscapedRegExp(pathToFileUrl(fileName));
   let errorInfo: Error;
   try {
     // 抛出异常好通过这里捕捉调用栈信息
@@ -28,7 +29,9 @@ export function getCallerFileInfo(fileName: string): {
   }
   const lines: string[] = (
     errorInfo.stack?.replace(/\\/gm, '/').split('\n') as string[]
-  ).reverse();
+  )
+    .reverse()
+    .map(p => pathToFileUrl(p)); // 转化为统一模式
 
   /** 查找结果 */
   const resultIndex: number = lines.findIndex(

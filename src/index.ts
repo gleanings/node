@@ -11,6 +11,8 @@ export {
   pathBasename,
   pathDirname,
   pathJoin,
+  fileUrlToPath,
+  pathToFileUrl,
 } from './path';
 
 export { readInput } from './readInput';

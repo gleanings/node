@@ -1,5 +1,10 @@
 # 更新日志 📔
 
+## 5.0.3 (2026-9-8)
+
+- 强化 getCallerFileinfo 的逻辑算法
+- 添加 `fileUrlToPath` 和 `pathToFileUrl`
+
 ## 5.0.2 (2026-9-8)
 
 - 维护信息

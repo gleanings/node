@@ -11,3 +11,5 @@ export { pathBasename } from './pathBasename';
 export { pathDirname } from './pathDirname';
 
 export { pathJoin } from './pathJoin';
+
+export { fileUrlToPath, pathToFileUrl } from './pathToFileURL';
