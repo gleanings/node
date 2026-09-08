@@ -1,6 +1,6 @@
+import path from 'node:path';
 import { autoEscapedRegExp } from '@vvi/utils';
 import { isWindows } from './isWindows';
-import { pathToFileUrl } from './pathToFileURL';
 
 /**
  * # 获取调用文件信息，此方法存在一些限制，请谨慎使用
@@ -18,8 +18,13 @@ export function getCallerFileInfo(fileName: string): {
   row: number;
   originArr: string[];
 } {
+  fileName = fileName.replaceAll(path.sep, '/');
+  if (/file:\/*/.test(fileName)) {
+    fileName = fileName.replace(/^.*file:\/*(.*)/, '$1');
+  }
   /** 结果行 */
-  const regexp = autoEscapedRegExp(pathToFileUrl(fileName));
+  const regexp = autoEscapedRegExp(fileName);
+
   let errorInfo: Error;
   try {
     // 抛出异常好通过这里捕捉调用栈信息
@@ -29,9 +34,7 @@ export function getCallerFileInfo(fileName: string): {
   }
   const lines: string[] = (
     errorInfo.stack?.replace(/\\/gm, '/').split('\n') as string[]
-  )
-    .reverse()
-    .map(p => pathToFileUrl(p)); // 转化为统一模式
+  ).reverse(); // 转化为统一模式
 
   /** 查找结果 */
   const resultIndex: number = lines.findIndex(
