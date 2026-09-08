@@ -19,7 +19,7 @@ const dependencies = packageJson.dependencies;
   'private',
   'dependencies',
   'jja',
-  'type'
+  'type',
 ].forEach(key => delete packageJson[key]);
 const esPrefix = 'es'; // es 前缀
 const cjsPrefix = 'cjs'; // cjs 前缀
@@ -111,15 +111,15 @@ packageJson = {
     ...exportsList,
   },
   keywords: ['node', 'mudbean', 'vvi'],
-  homepage: 'https://npm.lmssee.com/node',
+  homepage: 'https://npm.gleanings.cn/node',
   dependencies,
   bugs: {
-    url: 'https://github.com/MrMudBean/node/issues',
+    url: 'https://github.com/gleanings/node/issues',
     email: 'Mr.MudBean@outlook.com',
   },
   repository: {
     type: 'git',
-    url: 'git+https://github.com/MrMudBean/node.git',
+    url: 'git+https://github.com/gleanings/node.git',
   },
   publishConfig: {
     access: 'public',

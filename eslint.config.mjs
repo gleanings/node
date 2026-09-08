@@ -13,7 +13,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const tsconfigPath = resolve(__dirname, 'tsconfig.types.json');
+const tsconfigPath = resolve(__dirname, 'tsconfig.json');
 
 const ignorePattern = [
   'node_modules/',
@@ -53,7 +53,7 @@ export default [
   // 2. TypeScript 配置（必须）
   ...tseslint.configs.recommended.map(config => ({
     ...config,
-    files: ['src/**/*.{ts,tsx}'], // 按需配置
+    files: ['src/**/*.ts', 'eg/**/*.ts', 'eg/*.ts'], // 按需配置
     // ignores: ignorePattern,
     languageOptions: {
       ...config.languageOptions,

@@ -1,3 +1,4 @@
+import { autoEscapedRegExp } from '@vvi/utils';
 import { isWindows } from './isWindows';
 
 /**
@@ -17,7 +18,7 @@ export function getCallerFileInfo(fileName: string): {
   originArr: string[];
 } {
   /** 结果行 */
-  const regexp = new RegExp(fileName);
+  const regexp = autoEscapedRegExp(fileName);
   let errorInfo: Error;
   try {
     // 抛出异常好通过这里捕捉调用栈信息
@@ -28,21 +29,33 @@ export function getCallerFileInfo(fileName: string): {
   const lines: string[] = (
     errorInfo.stack?.replace(/\\/gm, '/').split('\n') as string[]
   ).reverse();
+
   /** 查找结果 */
   const resultIndex: number = lines.findIndex(
-    (currentEle: string, currentIndex: number, arr: string[]) =>
-      !regexp.test(currentEle) && regexp.test(arr[currentIndex + 1]),
+    (currentEle: string, currentIndex: number, arr: string[]) => {
+      // 满足的项的上一项有满足文件地址
+      if (!regexp.test(currentEle) && regexp.test(arr[currentIndex + 1]))
+        return true;
+
+      /** 低概率情况，使用文件与调用文件在同一个文件 */
+      if (regexp.test(currentEle) && currentIndex === 0) return true;
+
+      return false;
+    },
   );
   /** 如果没找到 */
   if (resultIndex == -1) return { name: '', line: 0, row: 0, originArr: lines };
 
   let result = lines[resultIndex];
 
-  // 去除结果行中的 （） 外部分
+  // 去除结果行中的 （） 外部分，仅关注文件地址
   if (/\(.*\)/.test(result)) {
     result = result.replace(/^.*\((.*)\).*/, '$1');
   }
-  /** 在 windows 环境去除 file：/// 前缀 */
+  /**
+   * 在 windows 环境去除 file：/// 前缀
+   * *现在在 mac 中也是这种形式了*
+   */
   if (/file:\/*/.test(result)) {
     result = result.replace(/^.*file:\/*(.*)/, '$1');
   }
@@ -50,10 +63,12 @@ export function getCallerFileInfo(fileName: string): {
   if (!isWindows && !result.startsWith('/')) {
     result = '/' + result;
   }
+  const match = result.match(/(.*?):(\d+):(\d+)/) ?? [result, result, 0, 0];
+
   return {
-    name: result.replace(/^(.*):\d+:\d+$/, '$1'),
-    line: Number(result.replace(/^.*:(\d+):\d+$/, '$')),
-    row: Number(result.replace(/^.*:\d+:(\d+)$/, '$1')),
+    name: match[1],
+    line: Number(match[2]),
+    row: Number(match[3]),
     originArr: lines,
   };
 }

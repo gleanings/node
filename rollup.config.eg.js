@@ -3,6 +3,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import cleanup from 'rollup-plugin-cleanup';
+import { external } from '@vvi/rollup-external';
 
 /** 生成  npm 文件的打包配置文件 */
 export default {
@@ -10,11 +11,14 @@ export default {
   output: {
     format: 'es',
     entryFileNames: '[name].mjs',
-    preserveModules: false,
+    preserveModules: true,
     sourcemap: false,
     exports: 'named',
     dir: '.eg/',
   },
+  external: external({
+    ignore: ['@vvi/dev', 'node:'],
+  }),
   plugins: [
     resolve(),
     commonjs(),
