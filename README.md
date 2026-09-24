@@ -2,9 +2,24 @@
 
 [![version](<https://img.shields.io/npm/v/@vvi/node.svg?logo=npm&logoColor=rgb(0,0,0)&label=版本号&labelColor=rgb(73,73,228)&color=rgb(0,0,0)>)](https://www.npmjs.com/package/@vvi/node) [![issues 提交](<https://img.shields.io/badge/issues-提交-rgb(255,0,63)?logo=github>)](https://github.com/gleanings/node/issues)
 
+## 安装
+
+```bash
+npm install --save @vvi/node
+
+# pnpm
+pnpm add @vvi/node
+
+# yarn
+yarn add @vvi/node
+```
+
+---
+---
+
 一个纯函数的工具，包含了
 
-## file 模块
+## `file` 模块
 
 - `fileExist` 文件是否存在
 - `getPackageJson` 异步获取指定层级的 "package.json" 文件内容
@@ -16,7 +31,7 @@
 - `writeJsonFileAsync` 异步把 `json` 数据写入指定文件（全覆盖）
 - `writeJsonFileSync` 同步把 `json` 数据写入执行文件（全覆盖）
 
-## runOtherCode 模块
+## `runOtherCode` 模块
 
 - `runOtherCode` 运行其他代码
 - `RunOtherCodeParam` 运行其他代码的参数类型声明
@@ -58,20 +73,68 @@ type npmRegistry = '官方' | '淘宝' | '腾讯' | '中科大' | 'yarn';
 
 由上图可见，使用 `淘宝` 源时，延迟相对较低。而有些国内源都没有 `npm` 原源（但是各源有各源的用途，譬如，如果是在腾讯云服务器部署的服务，当然是使用腾讯的 npm 源比较快啦，举衣反山）延迟低。
 
-## path 模块
+## `local-data` 模块
+
+### 读
+
+```ts
+import { LocalData } from '@vvi/node';
+
+/**
+ * 创建用户目录下的 `~/.mudbean.data/test/`  的读写机
+ *
+ * 若没有找到用户目录或是没有写入的权限，则不可用。 `ld.available` 值将为 `false`
+ *
+ * 在不可用时，直接拦截读写。读将直接返回 `null`,写直接返回 `false`
+ */
+const ld = new LocalData('test');
+
+/**
+ * 读取 `~/.mudbean.data/test/test` 文件，返回的是 JSON 格式
+ *
+ * 如若数据无法被 `JSON.stringify`、`JSON.parse` 则报错
+ */
+const content = ld.read<{ test: string }>('test');
+```
+
+### 写
+
+```ts
+import { LocalData } from '@vvi/node';
+
+// 同上
+const ld = new LocalData('test');
+
+// 将向文件 `~/.mudbean.data/test/test` 写入内容 `{"a":10}`
+ld.write('test', { a: 10 });
+```
+
+### 获取某文件的完整路径
+
+```ts
+import { LocalData } from '@vvi/node';
+
+// 同上
+const ld = new LocalData('test');
+
+// 返回 `~/.mudbean.data/test/test`
+console.log(ld.getPath('test'));
+```
+
+## `path` 模块
 
 - `pathJoin` - 文件地址拼接
 - `pathBasename` - 给出文件路径获取文件名，不带文件类型后缀
 - `initializeFile` - 初始化路径 `__filename` 和 `__dirname` ，因为这两个仅能在 `cjs` 文件下使用，使用这里做了初始化，兼容
 - `getCallerFilename` - 获取调用函数的文件路径
-- `isWindows` - 当前是否为 windows 环境，用于在使用 `path` 时分隔符不同产生的差异
+- `isWindows` - 当前是否为 `windows` 环境，用于在使用 `path` 时分隔符不同产生的差异
 - `getDirectoryBy` - 根据目标的文件或文件名来找到存在该目标的父级目录
 - `fileUrlToPath` - 文件 URL 转化为系统文件路径
 - `pathToFileUrl` - 系统文件路径转化为文件 URL
 
-### cursor 部分
+### `cursor` 部分
 
-你可以使用 cursor 进行对光标位置进行操控：
+你可以使用 `cursor` 进行对光标位置进行操控：
 
 |          方法           |              示意              |                       参数                       |
 | :---------------------: | :----------------------------: | :----------------------------------------------: |
@@ -89,14 +152,14 @@ type npmRegistry = '官方' | '淘宝' | '腾讯' | '中科大' | 'yarn';
 | `cursorLineBeforeClear` | 清理光标所在行光标位置前的内容 |                                                  |
 |    `cursorLineClear`    |    清理光标所在行的所有内容    |                                                  |
 
-## terminal 部分
+## `terminal` 部分
 
 - `terminalPageUp` 终端整页向上滚动
 - `terminalPageOn` 终端整页下翻
 - `terminalScrollScreen` 全屏滚动
 - `terminalScrollBetween` 设定终端可滚动范围
 
-### readInput 部分
+### `readInput` 部分
 
 等待用户输入的一个函数。因为要等待，所以是异步的，使用的时候应当使用 `await`
 
@@ -148,7 +211,7 @@ _p('hello'); // hello
 _p('hello', false); // hello （打印完不换行，光标依旧在 o 后面）
 ```
 
-### colorLine
+### `colorLine`
 
 一条彩色的分割线：
 
@@ -162,7 +225,7 @@ colorLine('就是玩', true); // 打印一个彩色分割线，中间是彩色�
 colorLine('就是玩', '#f21'); // 打印一个彩色分割线，中间是红色文本： “就是玩”
 ```
 
-### typewrite
+### `typewrite`
 
 一个简单的打字机效果，用于在终端输入内容
 
@@ -174,7 +237,7 @@ await typewrite(
 );
 ```
 
-### detectPackageManager
+### `detectPackageManager`
 
 检测命令启动的包管理器
 

@@ -111,7 +111,7 @@ packageJson = {
     ...exportsList,
   },
   keywords: ['node', 'mudbean', 'vvi'],
-  homepage: 'https://npm.gleanings.cn/node',
+  homepage: 'https://npms.gleanings.cn/node',
   dependencies,
   bugs: {
     url: 'https://github.com/gleanings/node/issues',

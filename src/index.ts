@@ -90,3 +90,5 @@ export { typewrite } from './typewrite';
 export { detectPackageManager, isWorkSpace } from './detect-package-manager';
 
 export { file };
+
+export { LocalData } from './local-data'
