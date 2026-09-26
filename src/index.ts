@@ -91,4 +91,6 @@ export { detectPackageManager, isWorkSpace } from './detect-package-manager';
 
 export { file };
 
-export { LocalData } from './local-data'
+export { LocalData } from './local-data';
+
+export { copyTextToClipboard } from './copy-text';

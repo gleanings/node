@@ -15,6 +15,7 @@ yarn add @vvi/node
 ```
 
 ---
+
 ---
 
 一个纯函数的工具，包含了
@@ -246,6 +247,10 @@ import { detectPackageManager } from '@vvi/node';
 
 detectPackageManager(); // 返回值可能是： 'npm'、'yarn'、'pnpm'
 ```
+
+### `copyTextToClipboard`
+
+复制文本到剪切板。似乎不支持 linux 系统。
 
 ## 使用日志
 
